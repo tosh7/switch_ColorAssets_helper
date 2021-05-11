@@ -1,5 +1,6 @@
 import glob
 import yaml
+import os
 
 def main():
     with open('config/directory.yml') as yml:
@@ -14,6 +15,10 @@ def main():
     storyboard_directories = glob.glob(f"{config}**/*.storyboard", recursive=True)
     xib_dictionaries = glob.glob(f"{config}**/*.xib", recursive=True)
 
+    old_color_sets = glob.glob(f"{old_assets}/*.colorset")
     
+    for old_color in old_color_sets:
+        // print out color names
+        print(os.path.splitext(os.path.basename(old_color))[0])
 
 main()
