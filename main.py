@@ -19,12 +19,15 @@ def main():
 
     old_color_sets = glob.glob(f"{old_assets}/*.colorset")
     new_color_sets = glob.glob(f"{new_assets}/*.colorset")
-    
-    for old_color in old_color_sets:
-        # print out color names
-        print(os.path.splitext(os.path.basename(old_color))[0])
 
-        contents_json = open((f"{old_color}/Contents.json"))
+    read_color_assets(old_color_sets)
+    read_color_assets(new_color_sets)
+
+def read_color_assets(color_sets):
+    for color in color_sets:
+        print(os.path.splitext(os.path.basename(color))[0])
+
+        contents_json = open((f"{color}/Contents.json"))
         for line in contents_json.readlines():
             if 'red' in line:
                 if '0x' in line:
@@ -36,28 +39,15 @@ def main():
                 if '0x' in line:
                     blue = re.findall('0x(.*)"', line)[0]
                 else:
-                    redValue = re.findall(': "(.*)"', line)[0]
+                    blueValue = re.findall(': "(.*)"', line)[0]
                     blue = rh.rgb_to_hex(redValue)
             elif 'green' in line:
                 if '0x' in line:
                     green = re.findall('0x(.*)"', line)[0]
                 else:
-                    redValue = re.findall(': "(.*)"', line)[0]
+                    greenValue = re.findall(': "(.*)"', line)[0]
                     green = rh.rgb_to_hex(redValue) 
             
         print(f'#{red}{green}{blue}')
 
-    for new_color in new_color_sets:
-        print(os.path.splitext(os.path.basename(new_color))[0])
-
-        contents_json = open((f"{new_color}/Contents.json"))
-        for line in contents_json.readlines():
-            if 'red' in line:
-                red = re.findall('0x(.*)"', line)[0]
-            elif 'blue' in line:
-                blue = re.findall('0x(.*)"', line)[0]
-            elif 'green' in line:
-                green = re.findall('0x(.*)"', line)[0]
-
-        print(f'#{red}{green}{blue}')
 main()
