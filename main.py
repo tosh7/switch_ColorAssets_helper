@@ -2,6 +2,7 @@ import glob
 import yaml
 import os
 import re
+import rgb_to_hex as rh
 
 def main():
     with open('config/directory.yml') as yml:
@@ -26,28 +27,37 @@ def main():
         contents_json = open((f"{old_color}/Contents.json"))
         for line in contents_json.readlines():
             if 'red' in line:
-                red = re.findall('0x(.*)"', line)[0]
-                print(red)
+                if '0x' in line:
+                    red = re.findall('0x(.*)"', line)[0]
+                else:
+                    redValue = re.findall(': "(.*)"', line)[0]
+                    red = rh.rgb_to_hex(redValue)
             elif 'blue' in line:
-                red = re.findall('0x(.*)"', line)[0]
-                print(red)
+                if '0x' in line:
+                    blue = re.findall('0x(.*)"', line)[0]
+                else:
+                    redValue = re.findall(': "(.*)"', line)[0]
+                    blue = rh.rgb_to_hex(redValue)
             elif 'green' in line:
-                red = re.findall('0x(.*)"', line)[0]
-                print(red)
+                if '0x' in line:
+                    green = re.findall('0x(.*)"', line)[0]
+                else:
+                    redValue = re.findall(': "(.*)"', line)[0]
+                    green = rh.rgb_to_hex(redValue) 
+            
+        print(f'#{red}{green}{blue}')
 
     for new_color in new_color_sets:
-        # print out color names
         print(os.path.splitext(os.path.basename(new_color))[0])
 
         contents_json = open((f"{new_color}/Contents.json"))
         for line in contents_json.readlines():
             if 'red' in line:
                 red = re.findall('0x(.*)"', line)[0]
-                print(red)
             elif 'blue' in line:
-                red = re.findall('0x(.*)"', line)[0]
-                print(red)
+                blue = re.findall('0x(.*)"', line)[0]
             elif 'green' in line:
-                red = re.findall('0x(.*)"', line)[0]
-                print(red)
+                green = re.findall('0x(.*)"', line)[0]
+
+        print(f'#{red}{green}{blue}')
 main()
