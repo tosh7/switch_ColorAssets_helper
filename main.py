@@ -54,13 +54,13 @@ def read_color_assets(color_sets):
                     blue = re.findall('0x(.*)"', line)[0]
                 else:
                     blueValue = re.findall(': "(.*)"', line)[0]
-                    blue = rh.rgb_to_hex(redValue)
+                    blue = rh.rgb_to_hex(blueValue)
             elif 'green' in line:
                 if '0x' in line:
                     green = re.findall('0x(.*)"', line)[0]
                 else:
                     greenValue = re.findall(': "(.*)"', line)[0]
-                    green = rh.rgb_to_hex(redValue) 
+                    green = rh.rgb_to_hex(greenValue) 
             
         color_hex = f'#{red}{green}{blue}'
 
@@ -72,7 +72,6 @@ class color_set:
     def __init__(self, color_name, color_hex):
         self.color_name = color_name
         self.color_hex = color_hex
-        self.replace_color_name = color_name
 
     def __eq__(self, other):
         return self.color_hex == other.color_hex
