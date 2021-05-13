@@ -25,7 +25,16 @@ def main():
     for old_color in old_colors:
         for new_color in new_colors:
             if old_color == new_color:
-                print(f'{old_color.color_name} {new_color.color_name}')
+                old_color.replace_color_name = new_color.color_name
+
+    for storyboard in storyboard_directories:
+        xml = open(storyboard)
+        for line in xml.readlines():
+            for old_color in old_colors:
+                if f'name="{old_color.color_name}' in line:
+                    print(line)
+                    print(old_color.replace_color_name)
+
 
 def read_color_assets(color_sets):
     colors = []
@@ -63,6 +72,7 @@ class color_set:
     def __init__(self, color_name, color_hex):
         self.color_name = color_name
         self.color_hex = color_hex
+        self.replace_color_name = color_name
 
     def __eq__(self, other):
         return self.color_hex == other.color_hex
