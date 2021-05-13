@@ -41,6 +41,20 @@ def main():
             for i in range(len(tmp_list)):
                 new_xml.write(tmp_list[i])
 
+    for xib in xib_dictionaries:
+        with open(xib, 'r') as xml:
+            tmp_list = []
+            for line in xml.readlines():
+                tmp_list.append(line)
+                for old_color in old_colors:
+                    if f'name="{old_color.color_name}' in line:
+                        new_line = line.replace(old_color.color_name, old_color.replace_color_name)
+                        tmp_list[-1] = new_line
+
+        with open(xib, 'w') as new_xml:
+            for i in range(len(tmp_list)):
+                new_xml.write(tmp_list[i])
+
 def read_color_assets(color_sets):
     colors = []
     for color in color_sets:
