@@ -28,13 +28,18 @@ def main():
                 old_color.replace_color_name = new_color.color_name
 
     for storyboard in storyboard_directories:
-        xml = open(storyboard)
-        for line in xml.readlines():
-            for old_color in old_colors:
-                if f'name="{old_color.color_name}' in line:
-                    print(line)
-                    print(old_color.replace_color_name)
+        with open(storyboard, 'r') as xml:
+            tmp_list = []
+            for line in xml.readlines():
+                tmp_list.append(line)
+                for old_color in old_colors:
+                    if f'name="{old_color.color_name}' in line:
+                        new_line = line.replace(old_color.color_name, old_color.replace_color_name)
+                        tmp_list[-1] = new_line
 
+        with open(storyboard, 'w') as new_xml:
+            for i in range(len(tmp_list)):
+                new_xml.write(tmp_list[i])
 
 def read_color_assets(color_sets):
     colors = []
