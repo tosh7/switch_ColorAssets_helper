@@ -27,33 +27,23 @@ def main():
             if old_color == new_color:
                 old_color.replace_color_name = new_color.color_name
 
-    for storyboard in storyboard_directories:
-        with open(storyboard, 'r') as xml:
-            tmp_list = []
-            for line in xml.readlines():
-                tmp_list.append(line)
-                for old_color in old_colors:
-                    if f'name="{old_color.color_name}' in line:
-                        new_line = line.replace(old_color.color_name, old_color.replace_color_name)
-                        tmp_list[-1] = new_line
+    def replace_colors(dictionaries):
+        for dictionary in dictionaries:
+            with open(dictionary, 'r') as xml:
+                tmp_list = []
+                for line in xml.readlines():
+                    tmp_list.append(line)
+                    for old_color in old_colors:
+                        if f'name="{old_color.color_name}' in line:
+                            new_line = line.replace(old_color.color_name, old_color.replace_color_name)
+                            tmp_list[-1] = new_line
 
-        with open(storyboard, 'w') as new_xml:
-            for i in range(len(tmp_list)):
-                new_xml.write(tmp_list[i])
+            with open(dictionary, 'w') as new_xml:
+                for i in range(len(tmp_list)):
+                    new_xml.write(tmp_list[i])
 
-    for xib in xib_dictionaries:
-        with open(xib, 'r') as xml:
-            tmp_list = []
-            for line in xml.readlines():
-                tmp_list.append(line)
-                for old_color in old_colors:
-                    if f'name="{old_color.color_name}' in line:
-                        new_line = line.replace(old_color.color_name, old_color.replace_color_name)
-                        tmp_list[-1] = new_line
-
-        with open(xib, 'w') as new_xml:
-            for i in range(len(tmp_list)):
-                new_xml.write(tmp_list[i])
+    replace_colors(storyboard_directories)
+    replace_colors(xib_dictionaries)
 
 def read_color_assets(color_sets):
     colors = []
