@@ -15,6 +15,7 @@ def main():
 
     storyboard_directories = glob.glob(f"{config}**/*.storyboard", recursive=True)
     xib_dictionaries = glob.glob(f"{config}**/*.xib", recursive=True)
+    swift_dictionaries = glob.glob(f"{config}**/*.swift", recursive=True)
 
     old_color_sets = glob.glob(f"{old_assets}/*.colorset")
     new_color_sets = glob.glob(f"{new_assets}/*.colorset")
@@ -26,6 +27,7 @@ def main():
         for new_color in new_colors:
             if old_color == new_color:
                 old_color.replace_color_name = new_color.color_name
+                old_color.replace_swiftGen_color_name = new_color.swiftGen_color_name
 
     def replace_colors(dictionaries):
         for dictionary in dictionaries:
@@ -44,6 +46,20 @@ def main():
 
     replace_colors(storyboard_directories)
     replace_colors(xib_dictionaries)
+
+    for swift_file in swift_dictionaries:
+        with open(swift_file, 'r') as swift:
+            tmp_list = []
+            for line in swift.readlines():
+                tmp_list.append(line)
+                for old_color in old_colors:
+                    if f'Asset.Colors.{old_color.swiftGen_color_name}' in line:
+                        new_line = line.replace(old_color.swiftGen_color_name, old_color.replace_swiftGen_color_name)
+                        tmp_list[-1] = new_line
+        
+        with open(swift_file, 'w') as new_swift:
+            for i in range(len(tmp_list)):
+                new_swift.write(tmp_list[i])
 
 def read_color_assets(color_sets):
     colors = []
