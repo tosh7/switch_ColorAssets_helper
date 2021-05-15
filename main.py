@@ -3,7 +3,7 @@ import yaml
 import os
 import re
 import rgb_to_hex as rh
-# import color_set as cs
+import color_set as cs
 
 def main():
     with open('config/directory.yml') as yml:
@@ -73,16 +73,8 @@ def read_color_assets(color_sets):
             
         color_hex = f'#{red}{green}{blue}'
 
-        colors.append(color_set(color_name, color_hex))
+        colors.append(cs.color_set(color_name, color_hex))
 
     return colors
-
-class color_set:
-    def __init__(self, color_name, color_hex):
-        self.color_name = color_name
-        self.color_hex = color_hex
-
-    def __eq__(self, other):
-        return self.color_hex == other.color_hex
 
 main()
