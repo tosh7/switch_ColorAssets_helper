@@ -56,6 +56,10 @@ def main():
                     if f'Asset.Colors.{old_color.swiftGen_color_name}' in line:
                         new_line = line.replace(old_color.swiftGen_color_name, old_color.replace_swiftGen_color_name)
                         tmp_list[-1] = new_line
+                    elif f'name: .{old_color.color_name}' in line:
+                        print(old_color.color_name)
+                        new_line = line.replace(old_color.color_name, old_color.replace_color_name)
+                        tmp_list[-1] = new_line
         
         with open(swift_file, 'w') as new_swift:
             for i in range(len(tmp_list)):
